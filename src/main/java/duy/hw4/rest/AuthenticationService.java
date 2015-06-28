@@ -34,6 +34,6 @@ public interface AuthenticationService extends Serializable {
 	public Response demoPostMethod();
 
 	@POST
-	@Path("logout")
+	@Path("/logout")
 	public Response logout(@Context HttpHeaders httpHeaders);
 }

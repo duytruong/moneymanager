@@ -18,9 +18,9 @@ package duy.hw4.rest;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateful;
@@ -50,7 +50,7 @@ import duy.hw4.service.UserRegistration;
  * <p/>
  * This class produces a RESTful service to read/write the contents of the members table.
  */
-@Path("/members")
+@Path("/user")
 @RequestScoped
 @Stateful
 public class UserService {
@@ -66,11 +66,11 @@ public class UserService {
     @Inject
     UserRegistration registration;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<User> listAllMembers() {
-        return repository.findAllOrderedByName();
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<User> listAllMembers() {
+//        return repository.findAllOrderedByName();
+//    }
 
     @GET
     @Path("/{id:[0-9][0-9]*}")
@@ -88,17 +88,20 @@ public class UserService {
      * or with a map of fields, and related errors.
      */
     @POST
+    @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMember(User member) {
+    public Response createMember(User user) {
     	
         Response.ResponseBuilder builder = null;
 
         try {
-            // Validates member using bean validation
-            validateMember(member);
-
-            registration.register(member);
+        	user.setServiceKey(UUID.randomUUID().toString());
+        	
+        	// Validates member using bean validation
+        	validateMember(user);
+            
+            registration.register(user);
 
             // Create an "ok" response
             builder = Response.ok();
@@ -130,20 +133,20 @@ public class UserService {
      * exception so that it can be interpreted separately.
      * </p>
      * 
-     * @param member Member to be validated
+     * @param user Member to be validated
      * @throws ConstraintViolationException If Bean Validation errors exist
      * @throws ValidationException If member with the same email already exists
      */
-    private void validateMember(User member) throws ConstraintViolationException, ValidationException {
+    private void validateMember(User user) throws ConstraintViolationException, ValidationException {
         // Create a bean validator and check for issues.
-        Set<ConstraintViolation<User>> violations = validator.validate(member);
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
         }
 
         // Check the uniqueness of the email address
-        if (emailAlreadyExists(member.getEmail())) {
+        if (emailAlreadyExists(user.getEmail())) {
             throw new ValidationException("Unique Email Violation");
         }
     }
@@ -175,12 +178,12 @@ public class UserService {
      * @return True if the email already exists, and false otherwise
      */
     public boolean emailAlreadyExists(String email) {
-        User member = null;
+        User user = null;
         try {
-            member = repository.findByEmail(email);
+            user = repository.findByEmail(email);
         } catch (NoResultException e) {
             // ignore
         }
-        return member != null;
+        return user != null;
     }
 }

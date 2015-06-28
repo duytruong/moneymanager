@@ -30,13 +30,13 @@ public class AuthenticationServiceImp implements AuthenticationService {
 	        @FormParam("password") String password) {
 
 		//UserAuthenticator authenticator = UserAuthenticator.getInstance();
-		String serviceKey = httpHeaders
-		        .getHeaderString(HTTPHeaderName.SERVICE_KEY);
+		//String serviceKey = httpHeaders.getHeaderString(HTTPHeaderName.SERVICE_KEY);
+		String serviceKey = "";
 
 		try {
 			String authToken = authenticator.login(serviceKey, username,
 			        password);
-
+			
 			JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
 			jsonObjBuilder.add("auth_token", authToken);
 			JsonObject jsonObj = jsonObjBuilder.build();
@@ -79,8 +79,8 @@ public class AuthenticationServiceImp implements AuthenticationService {
 	public Response logout(@Context HttpHeaders httpHeaders) {
 		try {
 			//UserAuthenticator authenticator = UserAuthenticator.getInstance();
-			String serviceKey = httpHeaders
-			        .getHeaderString(HTTPHeaderName.SERVICE_KEY);
+			//String serviceKey = httpHeaders.getHeaderString(HTTPHeaderName.SERVICE_KEY);
+			String serviceKey = "";
 			String authToken = httpHeaders
 			        .getHeaderString(HTTPHeaderName.AUTH_TOKEN);
 
@@ -94,8 +94,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
 		}
 	}
 
-	private Response.ResponseBuilder getNoCacheResponseBuilder(
-	        Response.Status status) {
+	private Response.ResponseBuilder getNoCacheResponseBuilder(Response.Status status) {
 		CacheControl cc = new CacheControl();
 		cc.setNoCache(true);
 		cc.setMaxAge(-1);

@@ -28,6 +28,10 @@ public class RESTRequestFilter implements ContainerRequestFilter {
 
 		String path = requestCtx.getUriInfo().getPath();
 		log.info("Filtering request path: " + path);
+		
+		if (path.startsWith("/user/register")) {
+			return;
+		}
 
 		// IMPORTANT!!! First, Acknowledge any pre-flight test from browsers for
 		// this case before validating the headers (CORS stuff)
@@ -39,8 +43,8 @@ public class RESTRequestFilter implements ContainerRequestFilter {
 
 		// Then check is the service key exists and is valid.
 		// UserAuthenticator authenticator = UserAuthenticator.getInstance();
-		String serviceKey = requestCtx
-		        .getHeaderString(HTTPHeaderName.SERVICE_KEY);
+		//String serviceKey = requestCtx.getHeaderString(HTTPHeaderName.SERVICE_KEY);
+		String serviceKey = "";
 
 		if (!authenticator.isServiceKeyValid(serviceKey)) {
 			// Kick anyone without a valid service key

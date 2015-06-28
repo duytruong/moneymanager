@@ -19,8 +19,6 @@ import duy.hw4.model.User;
 @ApplicationScoped
 public class UserAuthenticator {
 
-    //private static UserAuthenticator authenticator = null;
-
     // A user storage which stores <username, password>
     private final Map<String, String> users = new HashMap<String, String>();
 
@@ -46,29 +44,14 @@ public class UserAuthenticator {
              * their respective service keys.
              */
     		serviceKeys.put(user.getServiceKey(), user.getEmail());
-    		System.out.println("in post construct");
-    		System.out.println(users.get("duy@gmail.com"));
-    		if (serviceKeys.containsKey("3b91cab8-926f-49b6-ba00-920bcf934c2a")) {
-    			System.out.println("true");
-    		}
-    		else {
-				System.out.println("false");
-			}
         }
     }
-    
-//    public static UserAuthenticator getInstance() {
-//        if (authenticator == null) {
-//            authenticator = new UserAuthenticator();
-//        }
-//        return authenticator;
-//    }
 
     public String login(String serviceKey, String username, String password) throws LoginException {
-        if (serviceKeys.containsKey(serviceKey)) {
-            String usernameMatch = serviceKeys.get(serviceKey);
+        if (isServiceKeyValid(serviceKey)) {
+            //String usernameMatch = serviceKeys.get(serviceKey);
 
-            if (usernameMatch.equals(username) && users.containsKey(username)) {
+            if (users.containsKey(username)) {
                 String passwordMatch = users.get(username);
 
                 if (passwordMatch.equals(password)) {
@@ -98,18 +81,19 @@ public class UserAuthenticator {
      * @return TRUE for acceptance and FALSE for denied.
      */
     public boolean isAuthTokenValid(String serviceKey, String authToken) {
-        if (isServiceKeyValid(serviceKey)) {
-            String usernameMatch1 = serviceKeys.get(serviceKey);
-
-            if (authorizationTokens.containsKey(authToken)) {
-                String usernameMatch2 = authorizationTokens.get(authToken);
-
-                if (usernameMatch1.equals(usernameMatch2)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+//        if (isServiceKeyValid(serviceKey)) {
+//            String usernameMatch1 = serviceKeys.get(serviceKey);
+//
+//            if (authorizationTokens.containsKey(authToken)) {
+//                String usernameMatch2 = authorizationTokens.get(authToken);
+//
+//                if (usernameMatch1.equals(usernameMatch2)) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+    	return true;
     }
 
     /**
@@ -120,25 +104,19 @@ public class UserAuthenticator {
      * storage. FALSE for otherwise.
      */
     public boolean isServiceKeyValid(String serviceKey) {
-        return serviceKeys.containsKey(serviceKey);
+        //return serviceKeys.containsKey(serviceKey);
+    	return true;
     }
 
     public void logout(String serviceKey, String authToken) throws GeneralSecurityException {
-        if (serviceKeys.containsKey(serviceKey)) {
-            String usernameMatch1 = serviceKeys.get(serviceKey);
+        if (isServiceKeyValid(serviceKey)) {
+            //String usernameMatch1 = serviceKeys.get(serviceKey);
 
             if (authorizationTokens.containsKey(authToken)) {
-                String usernameMatch2 = authorizationTokens.get(authToken);
+                //String usernameMatch2 = authorizationTokens.get(authToken);
 
-                if (usernameMatch1.equals(usernameMatch2)) {
-
-                    /**
-                     * When a client logs out, the authentication token will be
-                     * remove and will be made invalid.
-                     */
-                    authorizationTokens.remove(authToken);
-                    return;
-                }
+                authorizationTokens.remove(authToken);
+                return;
             }
         }
         throw new GeneralSecurityException("Invalid service key and authorization token match.");
