@@ -27,7 +27,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @ApplicationScoped
-public class MemberRepository {
+public class UserRepository {
 
     @Inject
     private EntityManager em;

@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -26,8 +25,7 @@ public class User implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 3, max = 25, message = "3-25 letters and spaces")
-    @Pattern(regexp = "[^0-9]*", message = "Must not contain numbers")
+    @NotEmpty
     private String name;
 
     @NotNull
@@ -38,6 +36,10 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 6, max = 16, message = "6-16 characters")
     private String password;
+    
+    @NotNull
+    @NotEmpty
+    private String serviceKey;
 
 	public Long getId() {
         return id;
@@ -69,5 +71,13 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getServiceKey() {
+		return serviceKey;
+	}
+
+	public void setServiceKey(String serviceKey) {
+		this.serviceKey = serviceKey;
 	}
 }

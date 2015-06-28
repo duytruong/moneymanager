@@ -28,9 +28,9 @@ import javax.ws.rs.core.Response;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import duy.hw4.data.MemberRepository;
-import duy.hw4.rest.MemberService;
-import duy.hw4.service.MemberRegistration;
+import duy.hw4.data.UserRepository;
+import duy.hw4.rest.UserService;
+import duy.hw4.service.UserRegistration;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -52,13 +52,13 @@ public class MemberRegistrationTest {
     public static Archive<?> createTestArchive() {
         return ShrinkWrap
                 .create(WebArchive.class, "test.war")
-                .addClasses(User.class, MemberService.class, MemberRepository.class, MemberRegistration.class,
+                .addClasses(User.class, UserService.class, UserRepository.class, UserRegistration.class,
                         Resources.class).addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource("arquillian-ds.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Inject
-    MemberService memberRegistration;
+    UserService memberRegistration;
 
     @Inject
     Logger log;

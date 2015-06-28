@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -42,9 +41,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import duy.hw4.data.MemberRepository;
+import duy.hw4.data.UserRepository;
 import duy.hw4.model.User;
-import duy.hw4.service.MemberRegistration;
+import duy.hw4.service.UserRegistration;
 
 /**
  * JAX-RS Example
@@ -54,8 +53,7 @@ import duy.hw4.service.MemberRegistration;
 @Path("/members")
 @RequestScoped
 @Stateful
-@RolesAllowed("BOSS")
-public class MemberService {
+public class UserService {
     @Inject
     private Logger log;
 
@@ -63,10 +61,10 @@ public class MemberService {
     private Validator validator;
 
     @Inject
-    private MemberRepository repository;
+    private UserRepository repository;
 
     @Inject
-    MemberRegistration registration;
+    UserRegistration registration;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
