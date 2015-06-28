@@ -1,24 +1,25 @@
 package duy.hw4.service;
 
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.security.GeneralSecurityException;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.security.auth.login.LoginException;
 
 import duy.hw4.data.UserRepository;
 import duy.hw4.model.User;
 
-public final class UserAuthenticator {
+@Named
+@ApplicationScoped
+public class UserAuthenticator {
 
-    private static UserAuthenticator authenticator = null;
-    
-    @Inject
-    private UserRepository userRepository;
+    //private static UserAuthenticator authenticator = null;
 
     // A user storage which stores <username, password>
     private final Map<String, String> users = new HashMap<String, String>();
@@ -29,8 +30,11 @@ public final class UserAuthenticator {
     // An authentication token storage which stores <auth_token, username>.
     private final Map<String, String> authorizationTokens = new HashMap<String, String>();
     
+    @Inject
+    private UserRepository userRepository;
+    
     @PostConstruct
-    private void init() {
+    public void init() {
     	List<User> allUsers = userRepository.findAll();
     	for (User user : allUsers) {
     		users.put(user.getEmail(), user.getPassword());
@@ -42,15 +46,23 @@ public final class UserAuthenticator {
              * their respective service keys.
              */
     		serviceKeys.put(user.getServiceKey(), user.getEmail());
+    		System.out.println("in post construct");
+    		System.out.println(users.get("duy@gmail.com"));
+    		if (serviceKeys.containsKey("3b91cab8-926f-49b6-ba00-920bcf934c2a")) {
+    			System.out.println("true");
+    		}
+    		else {
+				System.out.println("false");
+			}
         }
     }
     
-    public static UserAuthenticator getInstance() {
-        if (authenticator == null) {
-            authenticator = new UserAuthenticator();
-        }
-        return authenticator;
-    }
+//    public static UserAuthenticator getInstance() {
+//        if (authenticator == null) {
+//            authenticator = new UserAuthenticator();
+//        }
+//        return authenticator;
+//    }
 
     public String login(String serviceKey, String username, String password) throws LoginException {
         if (serviceKeys.containsKey(serviceKey)) {

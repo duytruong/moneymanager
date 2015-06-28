@@ -3,6 +3,7 @@ package duy.hw4.rest;
 import java.security.GeneralSecurityException;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -19,13 +20,16 @@ import duy.hw4.service.UserAuthenticator;
 public class AuthenticationServiceImp implements AuthenticationService {
 
 	private static final long serialVersionUID = -2459096313906088275L;
+	
+	@Inject
+	UserAuthenticator authenticator;
 
 	@Override
 	public Response login(@Context HttpHeaders httpHeaders,
 	        @FormParam("username") String username,
 	        @FormParam("password") String password) {
 
-		UserAuthenticator authenticator = UserAuthenticator.getInstance();
+		//UserAuthenticator authenticator = UserAuthenticator.getInstance();
 		String serviceKey = httpHeaders
 		        .getHeaderString(HTTPHeaderName.SERVICE_KEY);
 
@@ -74,7 +78,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
 	@Override
 	public Response logout(@Context HttpHeaders httpHeaders) {
 		try {
-			UserAuthenticator authenticator = UserAuthenticator.getInstance();
+			//UserAuthenticator authenticator = UserAuthenticator.getInstance();
 			String serviceKey = httpHeaders
 			        .getHeaderString(HTTPHeaderName.SERVICE_KEY);
 			String authToken = httpHeaders
