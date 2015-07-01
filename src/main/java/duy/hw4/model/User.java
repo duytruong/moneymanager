@@ -1,11 +1,15 @@
 package duy.hw4.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -40,6 +44,9 @@ public class User implements Serializable {
     @NotNull
     @NotEmpty
     private String serviceKey;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Payment> payments;
 
 	public Long getId() {
         return id;
@@ -79,5 +86,13 @@ public class User implements Serializable {
 
 	public void setServiceKey(String serviceKey) {
 		this.serviceKey = serviceKey;
+	}
+	
+	public List<Payment> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
 	}
 }
