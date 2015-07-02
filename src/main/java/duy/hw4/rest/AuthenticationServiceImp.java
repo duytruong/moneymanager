@@ -104,7 +104,14 @@ public class AuthenticationServiceImp implements AuthenticationService {
 	}
 
 	@Override
-	public long getUserId(String authToken) {
-		return authenticator.getUserId(authToken);
+	public Response getUserId(String authToken) {
+		long userid = authenticator.getUserId(authToken);
+		
+		JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+		jsonObjBuilder.add("user_id", userid);
+		JsonObject jsonObj = jsonObjBuilder.build();
+
+		return getNoCacheResponseBuilder(Response.Status.OK).entity(
+		        jsonObj.toString()).build();
 	}
 }

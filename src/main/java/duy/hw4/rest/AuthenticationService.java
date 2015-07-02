@@ -39,5 +39,6 @@ public interface AuthenticationService extends Serializable {
 	
 	@POST
 	@Path("/getUserId")
-	public long getUserId(@FormParam("auth_token") String authToken);
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUserId(@FormParam("auth_token") String authToken);
 }
