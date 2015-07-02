@@ -31,7 +31,9 @@ public class PaymentService {
 	@Path("/getPayments")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Payment> getPaymentsByUserId(@FormParam("userid") long userId) {
-		return paymentRepository.findByUser(userId);
+		List<Payment> res = paymentRepository.findByUser(userId);
+		res.size();
+		return res;
 	}
 	
 	@POST

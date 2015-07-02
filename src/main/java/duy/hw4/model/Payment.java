@@ -35,7 +35,7 @@ public class Payment implements Serializable {
 	@NotEmpty
 	private String date;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 

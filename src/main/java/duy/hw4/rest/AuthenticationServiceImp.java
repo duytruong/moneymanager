@@ -108,7 +108,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
 		long userid = authenticator.getUserId(authToken);
 		
 		JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-		jsonObjBuilder.add("user_id", userid);
+		jsonObjBuilder.add("userid", userid);
 		JsonObject jsonObj = jsonObjBuilder.build();
 
 		return getNoCacheResponseBuilder(Response.Status.OK).entity(
