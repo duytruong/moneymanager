@@ -6,10 +6,9 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -28,10 +27,10 @@ public class PaymentService {
 	@Inject
 	private PaymentRepository paymentRepository;
 	
-	@GET
-	@Path("/{id:[0-9][0-9]*}")
+	@POST
+	@Path("/getPayments")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Payment> getPaymentsByUserId(@PathParam("id") String userId) {
+	public List<Payment> getPaymentsByUserId(@FormParam("userid") long userId) {
 		return paymentRepository.findByUser(userId);
 	}
 	

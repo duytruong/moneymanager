@@ -102,4 +102,9 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
 		return Response.status(status).cacheControl(cc);
 	}
+
+	@Override
+	public long getUserId(String authToken) {
+		return authenticator.getUserId(authToken);
+	}
 }

@@ -17,11 +17,11 @@ public class PaymentRepository {
 	@Inject
 	private EntityManager em;
 
-	public List<Payment> findByUser(String userId) {
+	public List<Payment> findByUser(long userId) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Payment> criteria = cb.createQuery(Payment.class);
 		Root<Payment> payment = criteria.from(Payment.class);
-		criteria.select(payment).where(cb.equal(payment.get("user_id"), userId));
+		criteria.select(payment).where(cb.equal(payment.get("user"), userId));
 		return em.createQuery(criteria).getResultList();
 	}
 }

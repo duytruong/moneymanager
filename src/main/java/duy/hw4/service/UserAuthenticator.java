@@ -121,4 +121,13 @@ public class UserAuthenticator {
         }
         throw new GeneralSecurityException("Invalid service key and authorization token match.");
     }
+    
+    public long getUserId(String authToken) {
+    	if (authorizationTokens.containsKey(authToken)) {
+	    	String email = authorizationTokens.get(authToken);
+	    	User user = userRepository.findByEmail(email);
+	    	return user.getId();
+    	}
+    	return -1;
+    }
 }

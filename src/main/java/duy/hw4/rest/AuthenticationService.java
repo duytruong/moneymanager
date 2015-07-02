@@ -36,4 +36,8 @@ public interface AuthenticationService extends Serializable {
 	@POST
 	@Path("/logout")
 	public Response logout(@Context HttpHeaders httpHeaders);
+	
+	@POST
+	@Path("/getUserId")
+	public long getUserId(@FormParam("auth_token") String authToken);
 }
