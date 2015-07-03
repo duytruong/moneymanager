@@ -31,6 +31,10 @@ public class UserAuthenticator {
     @Inject
     private UserRepository userRepository;
     
+    public void addUserToPool(User user) {
+    	users.put(user.getEmail(), user.getPassword());
+    }
+    
     @PostConstruct
     public void init() {
     	List<User> allUsers = userRepository.findAll();

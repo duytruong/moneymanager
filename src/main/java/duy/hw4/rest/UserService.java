@@ -40,6 +40,7 @@ import javax.ws.rs.core.Response;
 
 import duy.hw4.data.UserRepository;
 import duy.hw4.model.User;
+import duy.hw4.service.UserAuthenticator;
 import duy.hw4.service.UserRegistration;
 
 /**
@@ -62,6 +63,9 @@ public class UserService {
 
     @Inject
     UserRegistration registration;
+    
+    @Inject
+    UserAuthenticator authenticator;
 
 //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
@@ -99,6 +103,8 @@ public class UserService {
         	validateMember(user);
             
             registration.register(user);
+            
+            authenticator.addUserToPool(user);
 
             // Create an "ok" response
             builder = Response.ok();
