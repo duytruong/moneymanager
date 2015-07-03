@@ -1,12 +1,10 @@
 package duy.hw4.rest;
 
+import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.CacheControl;
@@ -14,6 +12,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import duy.hw4.model.TokenJSON;
+import duy.hw4.model.UserIdJSON;
 import duy.hw4.service.UserAuthenticator;
 
 @Stateless
@@ -23,6 +25,8 @@ public class AuthenticationServiceImp implements AuthenticationService {
 	
 	@Inject
 	UserAuthenticator authenticator;
+	
+	ObjectMapper mapper = new ObjectMapper();
 
 	@Override
 	public Response login(@Context HttpHeaders httpHeaders,
@@ -37,42 +41,25 @@ public class AuthenticationServiceImp implements AuthenticationService {
 			String authToken = authenticator.login(serviceKey, username,
 			        password);
 			
-			JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-			jsonObjBuilder.add("auth_token", authToken);
-			JsonObject jsonObj = jsonObjBuilder.build();
+			TokenJSON token = new TokenJSON();
+			token.setAuth_token(authToken);
+			String json = "";
+			try {
+				json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(token);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			return getNoCacheResponseBuilder(Response.Status.OK).entity(
-			        jsonObj.toString()).build();
+					json).build();
 
 		} catch (final LoginException ex) {
-			JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-			jsonObjBuilder.add("message",
-			        "Problem matching service key, username and password");
-			JsonObject jsonObj = jsonObjBuilder.build();
+			String json = "{\"message\":\"Problem matching service key, username and password\"}";
 
 			return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED)
-			        .entity(jsonObj.toString()).build();
+			        .entity(json).build();
 		}
-	}
-
-	@Override
-	public Response demoGetMethod() {
-		JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-		jsonObjBuilder.add("message", "Executed demoGetMethod");
-		JsonObject jsonObj = jsonObjBuilder.build();
-
-		return getNoCacheResponseBuilder(Response.Status.OK).entity(
-		        jsonObj.toString()).build();
-	}
-
-	@Override
-	public Response demoPostMethod() {
-		JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-		jsonObjBuilder.add("message", "Executed demoPostMethod");
-		JsonObject jsonObj = jsonObjBuilder.build();
-
-		return getNoCacheResponseBuilder(Response.Status.ACCEPTED).entity(
-		        jsonObj.toString()).build();
 	}
 
 	@Override
@@ -105,13 +92,18 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
 	@Override
 	public Response getUserId(String authToken) {
-		long userid = authenticator.getUserId(authToken);
+		Long userid = authenticator.getUserId(authToken);
 		
-		JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-		jsonObjBuilder.add("userid", userid);
-		JsonObject jsonObj = jsonObjBuilder.build();
+		UserIdJSON token = new UserIdJSON();
+		token.setUserid(userid);
+		String json = "";
+		try {
+			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(token);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return getNoCacheResponseBuilder(Response.Status.OK).entity(
-		        jsonObj.toString()).build();
+		        json).build();
 	}
 }

@@ -1,9 +1,9 @@
 package duy.hw4.rest;
 
 import java.io.Serializable;
+
 import javax.ejb.Local;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -22,16 +22,6 @@ public interface AuthenticationService extends Serializable {
 	public Response login(@Context HttpHeaders httpHeaders,
 	        @FormParam("username") String username,
 	        @FormParam("password") String password);
-
-	@GET
-	@Path("/demo-get-method")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response demoGetMethod();
-
-	@POST
-	@Path("/demo-post-method")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response demoPostMethod();
 
 	@POST
 	@Path("/logout")

@@ -9,13 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name = "Payment")
 public class Payment implements Serializable {
 
 	private static final long serialVersionUID = 2813583459084475785L;
@@ -35,7 +34,8 @@ public class Payment implements Serializable {
 	@NotEmpty
 	private String date;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 

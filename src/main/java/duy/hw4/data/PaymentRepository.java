@@ -22,6 +22,7 @@ public class PaymentRepository {
 		CriteriaQuery<Payment> criteria = cb.createQuery(Payment.class);
 		Root<Payment> payment = criteria.from(Payment.class);
 		criteria.select(payment).where(cb.equal(payment.get("user"), userId));
-		return em.createQuery(criteria).getResultList();
+		List<Payment> res = em.createQuery(criteria).getResultList();
+		return res;
 	}
 }

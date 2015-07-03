@@ -10,16 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name = "User", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+//@Table(name = "User", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User implements Serializable {
 
     private static final long serialVersionUID = 231740415685101132L;
@@ -45,7 +44,8 @@ public class User implements Serializable {
     @NotEmpty
     private String serviceKey;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Payment> payments;
 
 	public Long getId() {
