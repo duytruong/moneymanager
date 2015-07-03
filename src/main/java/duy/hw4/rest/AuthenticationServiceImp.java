@@ -15,7 +15,8 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import duy.hw4.model.TokenJSON;
-import duy.hw4.model.UserIdJSON;
+import duy.hw4.model.User;
+import duy.hw4.model.UserJSON;
 import duy.hw4.service.UserAuthenticator;
 
 @Stateless
@@ -92,13 +93,14 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
 	@Override
 	public Response getUserId(String authToken) {
-		Long userid = authenticator.getUserId(authToken);
+		User user = authenticator.getUser(authToken);
 		
-		UserIdJSON token = new UserIdJSON();
-		token.setUserid(userid);
+		UserJSON userJSOn = new UserJSON();
+		userJSOn.setUserid(user.getId());
+		userJSOn.setName(user.getName());
 		String json = "";
 		try {
-			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(token);
+			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userJSOn);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

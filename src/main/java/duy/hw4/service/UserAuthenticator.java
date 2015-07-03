@@ -93,7 +93,7 @@ public class UserAuthenticator {
 //            }
 //        }
 //        return false;
-    	return true;
+    	return authorizationTokens.containsKey(authToken);
     }
 
     /**
@@ -122,12 +122,12 @@ public class UserAuthenticator {
         throw new GeneralSecurityException("Invalid service key and authorization token match.");
     }
     
-    public Long getUserId(String authToken) {
+    public User getUser(String authToken) {
     	if (authorizationTokens.containsKey(authToken)) {
 	    	String email = authorizationTokens.get(authToken);
 	    	User user = userRepository.findByEmail(email);
-	    	return user.getId();
+	    	return user;
     	}
-    	return -1L;
+    	return null;
     }
 }

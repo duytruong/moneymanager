@@ -1,8 +1,18 @@
 package duy.hw4.model;
 
-public class UserIdJSON {
+public class UserJSON {
 
 	private Long userid;
+
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Long getUserid() {
 		return userid;
